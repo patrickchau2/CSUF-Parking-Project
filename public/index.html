@@ -1,0 +1,508 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CSUF Parking Assistant</title>
+    <meta author="">
+    <meta name="description" content="The CSUF Parking Assistant helps commuters find parking even during peak capacity hours.">
+    <meta name="keywords" content="CSUF parking">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="/user.js"></script>
+    <style>
+        body {
+            background-image: url('https://brand.fullerton.edu/zoom-backgrounds/zoom-aerial-06.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Add the following styles to make the content stand out */
+        .header, .main-content, .info-section, .Campus_Map, footer {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .header h1, .main-content h2, .info-section p, footer p {
+            color: #333;
+        }
+
+        .header h3, .info-section ul, .info-section strong, footer a {
+            color: #666;
+        }
+
+        .header h1 {
+            font-size: 32px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-section h2 {
+            margin-right: 10px;
+        }
+
+        .main-content h2 {
+            font-size: 24px;
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .info-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .info-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .info-section ul li .location {
+            font-weight: bold;
+        }
+
+        .info-section ul li .spots-available {
+            font-weight: bold;
+            color: #00cc00;
+        }
+
+        .info-section .notification-button {
+            background-color: #00cc00;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .Campus_Map {
+            text-align: center;
+        }
+
+        .Campus_Map .map img{
+            width: 75%;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        footer .social-icons img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        footer a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<header>
+    <h1>CSUF Parking Solution</h1>
+</header>
+<body>
+<p>TESTING V12: Host on server 3000 and connect server with CSUF website</p>
+<div class="header">
+    <h1>TITAN PARKING</h1>
+    <h3>Your go-to parking solution since 2024!</h3>
+    <div class="profile-section">
+        <h2>Profile</h2>
+        <p>Welcome, <span id="username">Patrick Chau</span>!</p>
+        <a href="profile.html">Login</a>
+        <a href="Sign Up.html">Sign Up</a>
+      </div>
+      <style>
+    .profile-section {
+        background-color: rgba(0, 0, 0, 0.5); /* Set the background color with transparency */
+        color: white; /* Set the text color to white */
+        padding: 10px; /* Add some padding for better readability */
+    }
+</style>
+  </div>
+<div class="main-content">
+    <div class="section-title">
+        <h2>CSUF PARKING SOLUTION</h2>
+        <p>Real-time parking availability for hassle-free parking experience!</p>
+    </div>
+    <div class="form-section">
+        <form>
+            <div class="form-item">
+                <label for="permit">Which Permit Type do you have?</label>
+                <select id="permit" onchange="showImage()">
+                    <option value="">Choose Permit Type</option>
+                    <option value="stdv_daily_pass">Student/Visitor Daily Pass</option>
+                    <option value="faculty_staff_pass">Faculty/Staff Parking</option>
+                </select>
+            </div>
+            <div class="image-display">
+                <div class="grid-container">
+                    <img id="nutwood-img" src="https://www.acmartin.com/sites/default/files/styles/lightboximage/public/NutwoodPkg-CSU-Fullerton-07.jpg?itok=-ENyR4r8" alt="Nutwood Structure" style="display: none;" />
+                    <img id="fullerton-img" src="https://fastly.4sqi.net/img/general/width960/546315_TmIrCUv_FntlVC0jBS8ocS0ENIrTXDbZVoYt189hFOo.jpg" alt="Fullerton Free Church" style="display: none;" />
+                    <img id="eastside-img" src="https://www.ipd-global.com/wp-content/uploads/2014/10/03IMG_52091-960x450_c.jpg" alt="Eastside Structure" style="display: none;" />
+                    <img id="state-college-img" src="https://news.fullerton.edu/app/uploads/2020/11/Parking-Fall-18-800x500.jpg" alt="State College Structure" style="display: none;" />
+                    <img id="lot-a-g-img" src="https://parking.fullerton.edu/parkinglotcounts/images/LotAG.jpg" alt="Lot A & G" style="display: none;" />
+                    <img id="college-park-img" src="https://fastly.4sqi.net/img/general/600x600/82578_L4deY_Ol1UYUb7aOJtN-i4VLK6p8XqPaonJ4f9Su2PI.jpg" alt="College Park Lot" style="display: none;" />
+                    <img id="titan-hall-img" src="https://news.fullerton.edu/app/uploads/2020/11/titan-hall-800x500.jpg" alt="Titan Hall" style="display: none;" />
+                </div>
+            </div>
+
+            <script>
+                function showImage() {
+                    var permit_type = document.getElementById("permit").value;
+                    var nutwoodImg = document.getElementById("nutwood-img");
+                    var fullertonImg = document.getElementById("fullerton-img");
+                    var eastsideImg = document.getElementById("eastside-img");
+                    var stateCollegeImg = document.getElementById("state-college-img");
+                    var lotAGImg = document.getElementById("lot-a-g-img");
+                    var clgParkImg = document.getElementById("college-park-img");
+                    var tHallImg = document.getElementById("titan-hall-img");
+
+                    nutwoodImg.style.display = "none";
+                    fullertonImg.style.display = "none";
+                    eastsideImg.style.display = "none";
+                    stateCollegeImg.style.display = "none";
+                    lotAGImg.style.display = "none";
+                    clgParkImg.style.display = "none";
+                    tHallImg.style.display = "none;";
+
+                    if (permit_type === "stdv_daily_pass") {
+                        nutwoodImg.style.display = "block";
+                        fullertonImg.style.display = "block";
+                        eastsideImg.style.display = "block";
+                        stateCollegeImg.style.display = "block";
+                        lotAGImg.style.display = "block";
+                        clgParkImg.style.display = "block";
+                    } 
+                    else if (permit_type === "faculty_staff_pass") {
+                        nutwoodImg.style.display = "block";
+                        fullertonImg.style.display = "block";
+                        stateCollegeImg.style.display = "block";
+                        lotAGImg.style.display = "block";
+                        clgParkImg.style.display = "block";
+                        tHallImg.style.display = "block;";
+                    }
+                }
+            </script>
+            <div class="form-item">
+                <label for="check-in-time">Check-in time:</label>
+                <input type="datetime-local" id="check-in-time" name="check-in-time" />
+            </div>
+            
+            <div class="form-item">
+                <button type="submit">Find parking</button>
+            </div>
+        </form>
+        <div id="parking-results"></div>
+    </div>
+    <div class="form-item">
+        <button type="submit"><a href="https://csufparking.t2hosted.com/per/selectpermit.aspx">Daily Permit</a></button>
+    </div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114296689-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-114296689-2');
+</script>
+
+<body onload="timedRefresh(30000);">
+
+    <script type="text/JavaScript">
+    <!--
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);", timeoutPeriod);
+    }
+    //   -->
+    </script>
+    <h1 style="display:none;">Parking Lot Counts for iOS</h1>
+    <form method="post" action="./mobile.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C5554C64" />
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="" />
+</div>
+<div class="Main">
+
+<div class="info-section">
+    <p>
+        Parking Areas with availability data:
+    </p>
+    <ul>
+        <li>
+            <span class="location">Nutwood Structure:</span>
+            <span class="spots-available">2484</span> spots available
+        </li>
+        <li>
+            <span class="location">Fullerton Free Church:</span>
+            <span class="spots-available">800</span> spots available
+        </li>
+        <li>
+            <span class="location">Eastside Structure:</span>
+            <span class="spots-available">3221</span> spots available
+        </li>
+        <li>
+            <span class="location">State College Structure:</span>
+            <span class="spots-available">1339</span> spots available
+        </li>
+        
+        <li>
+            <span class="location">Lot A & G:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+    <p>
+        Parking Areas without availability data:
+    </p>
+    <ul>
+        <li>
+            <span class="location">College Park & Lot S:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+        <li>
+            <span class="location">Titan Hall:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+        <li>
+            <span class="location">Lot I & F:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+        <li>
+            <span class="location">Lot C West & East:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+        <li>
+            <span class="location">Titan Hall:</span>
+            <span class="spots-available">Open</span> spots available
+        </li>
+
+    </ul>
+    <p>
+        <strong>Peak Time:</strong> Daily
+        <sup>
+            <span class="hours">Hours</span>
+        </sup>
+    </p>
+    <canvas id="combinedChart"></canvas>
+    <p>
+        <a href="sign-up.html"
+            >Sign up to receive notifications regarding available parking spots.</a
+        >
+    </p>
+    <button class="notification-button">Get Notification</button>
+</div>
+
+<script src="server.js">
+</script>
+<script>
+    // Get the canvas element
+    const combinedChartCanvas = document.getElementById('combinedChart');
+    let spotsAvailableData = [2484, 800, 3221, 1339, 1992]; // Initialize with some default data
+    // Create the combined chart
+    new Chart(combinedChartCanvas, {
+        type: 'bar', // Set the chart type
+        data: {
+            labels: ['Nutwood Structure', 'Fullerton Free Church', 'Eastside Structure', 'State College Structure', 'Lot A & G'],
+            datasets: [
+                {
+                    label: 'Spots Available',
+                    data: spotsAvailableData, // Use the empty array as the chart's data
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Spots Taken',
+                    data: [200, 0, 0, 0, 0], // Taken spots data
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Highlighted color for taken spots
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    type: 'bar' // Display as bar chart
+                },
+                {
+                    label: 'Peak Time',
+                    data: calculateSpotsLeft(), // Auto-calculated peak time data
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    type: 'line' // Display as line chart
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+   
+    
+    function calculateSpotsLeft() {
+        var spotsAvailable = spotsAvailableData;
+        var spotsTaken = [0, 0, 0, 0, 0]; // Assuming no spots are taken initially
+
+        // Calculate spots left for each location
+        var spotsLeft = spotsAvailable.map(function (spots, index) {
+            return spots - spotsTaken[index];
+        });
+
+        return spotsLeft;
+    }
+
+    function calculatePeakTime() {
+        return [8, 9, 10, 11, 12, 13, 14]; // Replace with your peak time calculation logic
+    }
+
+    var spotsLeft = calculateSpotsLeft();
+    console.log(spotsLeft);
+
+    (function() {
+  // Update the chart on page load
+  updateChart();
+
+  // Update the chart every 10 seconds
+  setInterval(updateChart, 10000);
+})();
+
+function updateChart() {
+    fetch('/api/parking')
+   .then(response => response.json())
+   .then(data => {
+        // Update the variable with new data
+        spotsAvailableData = data.spotsAvailable;
+
+        // Recalculate spots left with new data
+        var spotsLeft = calculateSpotsLeft();
+
+        // Update the chart with new data
+        chart.data.datasets[0].data = spotsLeft; // Update the chart's data with spotsLeft
+        chart.update(); // Update the chart
+    })
+   .catch(error => console.error(error));
+}
+
+    fetch('/api/parking')
+      .then(response => response.json())
+      .then(data => {
+        // Update your HTML with the data
+        const parkingSpots = document.querySelectorAll('.spots-available');
+        data.forEach((spot, index) => {
+          parkingSpots[index].innerText = spot;
+        });
+      })
+      .catch(error => console.error(error));
+</script>
+
+<script>
+      <nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+    <li><a href="/profile.html">Login</a></li>
+    <li><a href="/signup.html">Sign Up</a></li>
+    
+  </ul>
+</nav>
+
+</script>
+<div class = 'Campus_Map'>
+    <p><h1>Cal State Fullerton Campus Map</h1></p>
+    <div class = 'map'>
+        <img id="campus_map_img" src="https://parking.fullerton.edu/images/CSUF%20Campus%20Map%201.23.png" alt="Campus Map" style="display: inline"/>
+    </div>
+</div>
+<footer>
+    <p>TITAN PARK &copy; 2024</p>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/TITANPARK">
+            <img
+                src="https://i.imgur.com/U12vD41.png"
+                alt="Facebook logo"
+                title="Facebook"
+            />
+        </a>
+        <a href="https://www.twitter.com/TITANPARK">
+            <img
+                src="https://i.imgur.com/TQ1fD4j.png"
+                alt="Twitter logo"
+                title="Twitter"
+            />
+        </a>
+        <a href="https://www.instagram.com/TITANPARK">
+            <img
+                src="https://i.imgur.com/j9fQzw3.png"
+                alt="Instagram logo"
+                title="Instagram"
+            />
+        </a>
+    </div>
+    <a href="help-center.html">Help Center</a> |
+    <a href="faqs.html">FAQs</a> |
+    <a href="support-team.html">Support Team</a> |
+    <a href="user-manual.html">User Manual</a> |
+    <a href="contact.html">Get in touch</a> 
+</footer>
+
+</body>
+</html>

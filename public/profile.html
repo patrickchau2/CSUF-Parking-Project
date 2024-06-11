@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Profile</title>
+  <meta name="description" content="Profile page for the CSUF Parking Assistant">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+  body {
+    background-image: url('https://brand.fullerton.edu/zoom-backgrounds/zoom-aerial-06.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Add the following styles to make the content stand out */
+  header, main, section, footer {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+  }
+
+  header h1, main h2, section p, footer p {
+    color: #333;
+  }
+
+  header h3, section ul, section strong, footer a {
+    color: #666;
+  }
+
+  header h1 {
+    font-size: 32px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    padding: 20px;
+  }
+</style>
+<body>
+  <header>
+    <h1>CSUF Parking Assistant</h1>
+  </header>
+  <main>
+    <h2>Profile</h2>
+    <section id="view-profile">
+      <h3>Current Profile Information</h3>
+      <p>Name: John Doe</p>
+      <p>Email: john.doe@fullerton.edu</p>
+      <p>Phone: 555-555-5555</p>
+    </section>
+    <section id="edit-profile">
+      <h3>Edit Profile Information</h3>
+      <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="John Doe">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="john.doe@fullerton.edu">
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" value="555-555-5555">
+        <button type="submit">Save Changes</button>
+      </form>
+    </section>
+    <section id="change-password">
+      <h3>Change Password</h3>
+      <form>
+        <label for="current-password">Current Password:</label>
+        <input type="password" id="current-password" name="current-password">
+        <label for="new-password">New Password:</label>
+        <input type="password" id="new-password" name="new-password">
+        <label for="confirm-password">Confirm New Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password">
+        <button type="submit">Change Password</button>
+      </form>
+    </section>
+   <div>
+    <a href="index.html">Go-Back</a> 
+    <a href="index.html">Logout</a>
+  </div>
+  </main>
+  <footer>
+    <p>&copy; 2023 CSUF Parking Assistant</p>
+  </footer>
+  <script src="scripts.js"></script>
+</body>
+</html>
